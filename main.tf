@@ -46,7 +46,7 @@ resource "helm_release" "argocd" {
   name       = "argocd"
   namespace  = "argocd"
   create_namespace = true
-  //repository = "https://argoproj.github.io/argo-helm"
+  //repository = "file://C:/Dev/repo/applications/"
   chart      = "./charts/argo-cd"
   render_subchart_notes = false
   depends_on = [data.azurerm_kubernetes_cluster.aks2]
@@ -59,6 +59,18 @@ resource "helm_release" "argocd" {
   }
 
 }
+
+resource "helm_release" "guestbook" {
+  name       = "guestbook"
+  namespace  = "argocd"
+  create_namespace = true
+  //repository = "file://C:/Dev/repo/applications/root-app"
+  chart      = "./charts/root-app"
+  render_subchart_notes = false
+  depends_on = [helm_release.argocd]
+
+}
+
 
 
 
@@ -183,6 +195,7 @@ resource "kubectl_manifest" "guestbook" {
 #helm status argocd --namespace argocd
 #helm install argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
 #helm uninstall argocd --namespace argocd
-
+#kubectl delete clusterrole argocd-application-controller
+#kubectl delete clusterrole argocd-server
 #terraform plan -out main.tfplan
 #terraform apply main.tfplan

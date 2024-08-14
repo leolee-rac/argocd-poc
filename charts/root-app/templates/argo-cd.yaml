@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: C:\Dev\Projects\shield-v19\applications
+    repoURL: C:\Dev\repo\applications
     path: charts/argo-cd
     targetRevision: HEAD
   destination:

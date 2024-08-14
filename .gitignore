@@ -1,0 +1,6 @@
+charts/**/charts
+.terraform
+.terraform.lock.hcl
+main.tfplan
+terraform.tfstate
+terraform.tfstate.backup

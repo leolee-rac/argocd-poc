@@ -1,5 +1,5 @@
 redis-ha:
-  enabled: false
+  enabled: true
 
 controller:
   replicas: 1

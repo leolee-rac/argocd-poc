@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: C:\Dev\repo\applications
+    repoURL: https://github.com/leolee-rac/argocd-poc.git
     path: charts/argo-cd
     targetRevision: HEAD
   destination:

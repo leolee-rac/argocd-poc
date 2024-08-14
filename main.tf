@@ -1,26 +1,11 @@
-resource "kubernetes_namespace" "argocd" {
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
+# resource "kubernetes_namespace" "argocd" {
+#   depends_on = [data.azurerm_kubernetes_cluster.aks2]
 
-  metadata {
-    name = "argocd"
-  }
-}
+#   metadata {
+#     name = "argocd"
+#   }
+# }
 
-resource "kubernetes_namespace" "dev" {
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
-
-  metadata {
-    name = "dev"
-  }
-}
-
-resource "kubernetes_namespace" "uat" {
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
-
-  metadata {
-    name = "uat"
-  }
-}
 
 # Auth to fetch git-ops code
 # resource "kubernetes_secret" "argocd_repo_credentials" {
@@ -47,7 +32,7 @@ resource "helm_release" "argocd" {
   namespace  = "argocd"
   create_namespace = true
   repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "argo-cd"
+  chart      = "charts/argo-cd"
   depends_on = [data.azurerm_kubernetes_cluster.aks2]
   values = [
     file("ha-install.yaml")
@@ -63,7 +48,7 @@ resource "helm_release" "guestbook_applicationset" {
   name       = "applicationset"
   create_namespace = true
   repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "guestbook"
+  chart      = "charts/guestbook"
   depends_on = [helm_release.argocd]
 }
 

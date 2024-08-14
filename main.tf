@@ -30,9 +30,9 @@
 resource "helm_release" "argocd" {
   name       = "argocd"
   namespace  = "argocd"
-  create_namespace = true
-  repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "charts/argo-cd"
+  create_namespace = false
+  //repository = "https://github.com/leolee-rac/argocd-poc.git"
+  chart      = "./charts/argo-cd"
   depends_on = [data.azurerm_kubernetes_cluster.aks2]
   values = [
     file("ha-install.yaml")
@@ -44,13 +44,20 @@ resource "helm_release" "argocd" {
 
 }
 
-resource "helm_release" "guestbook_applicationset" {
-  name       = "applicationset"
-  create_namespace = true
-  repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "charts/guestbook"
-  depends_on = [helm_release.argocd]
+
+resource "null_resource" "applicationset" {
+  provisioner "local-exec" {
+    command = "kubectl apply -n argocd -f https://raw.githubusercontent.com/leolee-rac/argocd-poc/main/charts/guestbook/templates/applicationset.yaml?token=GHSAT0AAAAAACQQSSU6TZUY3IPT3P6HRPIWZV4YBMA"
+  }
 }
+# resource "helm_release" "applicationset" {
+#   name       = "applicationset"
+#   namespace  = "argocd"
+#   create_namespace = false
+#   repository = "https://github.com/leolee-rac/argocd-poc.git"
+#   chart      = "charts/guestbook"
+#   depends_on = [helm_release.argocd]
+# }
 
 
 
@@ -176,10 +183,17 @@ resource "kubectl_manifest" "guestbook" {
 #helm status argocd --namespace argocd
 #helm install argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
 #helm uninstall argocd --namespace argocd
+
+#helm list -n argocd
+#helm uninstall applicationset -n argocd
+
 #kubectl delete clusterrole argocd-application-controller
 #kubectl delete clusterrole argocd-server
 #terraform plan -out main.tfplan
 #terraform apply main.tfplan
+
+#terraform state list
+#terraform state rm helm_release.applicationset
 
 #kubectl edit application guestbook --namespace default
 #kubectl apply -n argocd -f applicationset.yaml

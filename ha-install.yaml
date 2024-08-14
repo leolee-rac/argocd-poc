@@ -1,42 +1,43 @@
-redis-ha:
-  enabled: true
+argo-cd:
+  redis-ha:
+    enabled: false # required 3 nodes
 
-controller:
-  replicas: 1
+  controller:
+    replicas: 1
 
-server:
-  service:
-    type: LoadBalancer
-  autoscaling:
-    enabled: true
-    minReplicas: 2
+  server:
+    service:
+      type: LoadBalancer
+    autoscaling:
+      enabled: true
+      minReplicas: 2
 
-repoServer:
-  autoscaling:
-    enabled: true
-    minReplicas: 2
+  repoServer:
+    autoscaling:
+      enabled: true
+      minReplicas: 2
 
-applicationSet:
-  replicas: 2
+  applicationSet:
+    replicas: 2
 
-# Server Config
-configs:
-  params:
-    application.namespaces: "*"
-    applicationsetcontroller.enable.progressive.syncs: true
-    # applicationsetcontroller.policy: sync
-    # controller.ignore.normalizer.jq.timeout: 1s
-    # controller.operation.processors: 10
-    # controller.repo.server.timeout.seconds: 60
-    # controller.self.heal.timeout.seconds: 5
-    # controller.status.processors: 20
-    create: true
-    # otlp.address: ""
-    # reposerver.parallelism.limit: 0
-    # server.basehref: /
-    # server.disable.auth: false
-    # server.enable.gzip: true
-    # server.insecure: false
-    # server.rootpath: ""
-    # server.staticassets: /shared/app
-    # server.x.frame.options: sameorigin
+  # Server Config
+  configs:
+    params:
+      application.namespaces: "*"
+      applicationsetcontroller.enable.progressive.syncs: true
+      # applicationsetcontroller.policy: sync
+      # controller.ignore.normalizer.jq.timeout: 1s
+      # controller.operation.processors: 10
+      # controller.repo.server.timeout.seconds: 60
+      # controller.self.heal.timeout.seconds: 5
+      # controller.status.processors: 20
+      create: true
+      # otlp.address: ""
+      # reposerver.parallelism.limit: 0
+      # server.basehref: /
+      # server.disable.auth: false
+      # server.enable.gzip: true
+      # server.insecure: false
+      # server.rootpath: ""
+      # server.staticassets: /shared/app
+      # server.x.frame.options: sameorigin

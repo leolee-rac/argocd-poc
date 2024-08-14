@@ -48,25 +48,23 @@ resource "helm_release" "argocd" {
   create_namespace = true
   //repository = "file://C:/Dev/repo/applications/"
   chart      = "./charts/argo-cd"
-  render_subchart_notes = false
   depends_on = [data.azurerm_kubernetes_cluster.aks2]
   values = [
     file("ha-install.yaml")
   ]
-  set {
-    name  = "server.service.type"
-    value = "LoadBalancer"
-  }
+  # set {
+  #   name  = "server.service.type"
+  #   value = "LoadBalancer"
+  # }
 
 }
 
 resource "helm_release" "guestbook" {
   name       = "guestbook"
-  namespace  = "argocd"
+  namespace  = "dev"
   create_namespace = true
   //repository = "file://C:/Dev/repo/applications/root-app"
   chart      = "./charts/root-app"
-  render_subchart_notes = false
   depends_on = [helm_release.argocd]
 
 }

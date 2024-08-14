@@ -59,14 +59,12 @@ resource "helm_release" "argocd" {
 
 }
 
-resource "helm_release" "guestbook" {
-  name       = "guestbook"
-  namespace  = "dev"
+resource "helm_release" "guestbook_applicationset" {
+  name       = "applicationset"
   create_namespace = true
   //repository = "file://C:/Dev/repo/applications/root-app"
-  chart      = "./charts/root-app"
+  chart      = "./charts/guestbook"
   depends_on = [helm_release.argocd]
-
 }
 
 
@@ -197,3 +195,7 @@ resource "kubectl_manifest" "guestbook" {
 #kubectl delete clusterrole argocd-server
 #terraform plan -out main.tfplan
 #terraform apply main.tfplan
+
+#kubectl edit application guestbook --namespace default
+#kubectl apply -n argocd -f applicationset.yaml
+#kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml

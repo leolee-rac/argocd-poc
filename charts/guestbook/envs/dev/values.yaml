@@ -1,0 +1,16 @@
+applicationset:
+  name: guestbook
+  template:
+    metadata:
+      name: "dev-guestbook"
+      labels:
+        envLabel: 'dev'
+  spec:
+    project: my-project
+    source:
+      repoURL: C:\Dev\repo\argocd-example-apps
+      targetRevision: HEAD
+      path: envs/dev
+    destination:
+      server: "in-cluster"
+      namespace: dev

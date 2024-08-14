@@ -1,0 +1,16 @@
+applicationset:
+  name: guestbook
+  template:
+    metadata:
+      name: "uat-guestbook"
+      labels:
+        envLabel: 'uat'
+  spec:
+    project: my-project
+    source:
+      repoURL: C:\Dev\repo\argocd-example-apps
+      targetRevision: HEAD
+      path: envs/uat
+    destination:
+      server: "in-cluster"
+      namespace: uat

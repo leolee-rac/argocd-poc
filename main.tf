@@ -46,8 +46,8 @@ resource "helm_release" "argocd" {
   name       = "argocd"
   namespace  = "argocd"
   create_namespace = true
-  //repository = "file://C:/Dev/repo/applications/"
-  chart      = "./charts/argo-cd"
+  repository = "https://github.com/leolee-rac/argocd-poc.git"
+  chart      = "argo-cd"
   depends_on = [data.azurerm_kubernetes_cluster.aks2]
   values = [
     file("ha-install.yaml")
@@ -62,8 +62,8 @@ resource "helm_release" "argocd" {
 resource "helm_release" "guestbook_applicationset" {
   name       = "applicationset"
   create_namespace = true
-  //repository = "file://C:/Dev/repo/applications/root-app"
-  chart      = "./charts/guestbook"
+  repository = "https://github.com/leolee-rac/argocd-poc.git"
+  chart      = "guestbook"
   depends_on = [helm_release.argocd]
 }
 

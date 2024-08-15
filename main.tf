@@ -62,20 +62,12 @@ resource "helm_release" "argocd" {
   }
 }
 
-resource "helm_release" "argocd-manage" {
-  name       = "argocd-manage"
+resource "helm_release" "root-app" {
+  name       = "root-app"
   namespace  = "argocd"
-  create_namespace = false
   repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "charts/argo-cd"
+  chart      = "charts/root-app"
   depends_on = [helm_release.argocd]
-  # values = [
-  #   file("ha-install.yaml")
-  # ]
-  # set {
-  #   name  = "server.service.type"
-  #   value = "LoadBalancer"
-  # }
 
 }
 
@@ -85,14 +77,14 @@ resource "helm_release" "argocd-manage" {
 #     command = "kubectl apply -n argocd -f https://raw.githubusercontent.com/leolee-rac/argocd-poc/main/charts/guestbook/templates/applicationset.yaml?token=GHSAT0AAAAAACQQSSU6TZUY3IPT3P6HRPIWZV4YBMA"
 #   }
 # }
-resource "helm_release" "applicationset" {
-  name       = "applicationset"
-  namespace  = "argocd"
-  create_namespace = false
-  repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "charts/guestbook"
-  depends_on = [helm_release.argocd]
-}
+# resource "helm_release" "applicationset" {
+#   name       = "applicationset"
+#   namespace  = "argocd"
+#   create_namespace = false
+#   repository = "https://github.com/leolee-rac/argocd-poc.git"
+#   chart      = "charts/guestbook"
+#   depends_on = [helm_release.argocd]
+# }
 
 
 
@@ -243,3 +235,6 @@ resource "kubectl_manifest" "guestbook" {
 #kubectl edit application guestbook --namespace default
 #kubectl apply -n argocd -f applicationset.yaml
 #kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
+
+# upgrade https://www.arthurkoziel.com/setting-up-argocd-with-helm/
+# helm dep update charts/argo-cd/

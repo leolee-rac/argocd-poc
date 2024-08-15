@@ -1,0 +1,7 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prd
+  source:
+    repoURL: https://github.com/leolee-rac/argocd-example-apps
+    targetRevision: HEAD

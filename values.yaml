@@ -1,6 +1,0 @@
-server:
-  extraArgs:
-    - --application-namespaces="*"
-controller:
-  extraArgs:
-    - --application-namespaces="*"

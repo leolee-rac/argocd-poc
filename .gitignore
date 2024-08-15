@@ -4,3 +4,4 @@ charts/**/charts
 main.tfplan
 terraform.tfstate
 terraform.tfstate.backup
+terraform.*

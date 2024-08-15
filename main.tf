@@ -45,19 +45,19 @@ resource "helm_release" "argocd" {
 }
 
 
-resource "null_resource" "applicationset" {
-  provisioner "local-exec" {
-    command = "kubectl apply -n argocd -f https://raw.githubusercontent.com/leolee-rac/argocd-poc/main/charts/guestbook/templates/applicationset.yaml?token=GHSAT0AAAAAACQQSSU6TZUY3IPT3P6HRPIWZV4YBMA"
-  }
-}
-# resource "helm_release" "applicationset" {
-#   name       = "applicationset"
-#   namespace  = "argocd"
-#   create_namespace = false
-#   repository = "https://github.com/leolee-rac/argocd-poc.git"
-#   chart      = "charts/guestbook"
-#   depends_on = [helm_release.argocd]
+# resource "null_resource" "applicationset" {
+#   provisioner "local-exec" {
+#     command = "kubectl apply -n argocd -f https://raw.githubusercontent.com/leolee-rac/argocd-poc/main/charts/guestbook/templates/applicationset.yaml?token=GHSAT0AAAAAACQQSSU6TZUY3IPT3P6HRPIWZV4YBMA"
+#   }
 # }
+resource "helm_release" "applicationset" {
+  name       = "applicationset"
+  namespace  = "argocd"
+  create_namespace = false
+  repository = "https://github.com/leolee-rac/argocd-poc.git"
+  chart      = "charts/guestbook"
+  depends_on = [helm_release.argocd]
+}
 
 
 

@@ -1,10 +1,26 @@
-# resource "kubernetes_namespace" "argocd" {
-#   depends_on = [data.azurerm_kubernetes_cluster.aks2]
+resource "kubernetes_namespace" "argocd" {
+  depends_on = [data.azurerm_kubernetes_cluster.aks2]
 
-#   metadata {
-#     name = "argocd"
-#   }
-# }
+  metadata {
+    name = "argocd"
+  }
+}
+
+resource "kubernetes_namespace" "dev" {
+  depends_on = [data.azurerm_kubernetes_cluster.aks2]
+
+  metadata {
+    name = "dev"
+  }
+}
+
+resource "kubernetes_namespace" "uat" {
+  depends_on = [data.azurerm_kubernetes_cluster.aks2]
+
+  metadata {
+    name = "uat"
+  }
+}
 
 
 # Auth to fetch git-ops code
@@ -27,16 +43,35 @@
 
 
 # https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/README.md
+
 resource "helm_release" "argocd" {
   name       = "argocd"
   namespace  = "argocd"
-  create_namespace = false
-  //repository = "https://github.com/leolee-rac/argocd-poc.git"
-  chart      = "./charts/argo-cd"
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  version    = "7.4.3"
+  depends_on = [
+    kubernetes_namespace.argocd
+  ]
   values = [
     file("ha-install.yaml")
   ]
+  set {
+    name  = "server.service.type"
+    value = "LoadBalancer"
+  }
+}
+
+resource "helm_release" "argocd-manage" {
+  name       = "argocd-manage"
+  namespace  = "argocd"
+  create_namespace = false
+  repository = "https://github.com/leolee-rac/argocd-poc.git"
+  chart      = "charts/argo-cd"
+  depends_on = [helm_release.argocd]
+  # values = [
+  #   file("ha-install.yaml")
+  # ]
   # set {
   #   name  = "server.service.type"
   #   value = "LoadBalancer"
@@ -197,6 +232,12 @@ resource "kubectl_manifest" "guestbook" {
 
 #kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-name=argocd --overwrite
 #kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-namespace=argocd --overwrite
+
+#kubectl annotate serviceaccount argocd-server -n argocd meta.helm.sh/release-name=argocd --overwrite
+#kubectl annotate serviceaccount argocd-server -n argocd meta.helm.sh/release-namespace=argocd --overwrite
+
+#kubectl annotate secret argocd-secret -n argocd meta.helm.sh/release-name=argocd --overwrite
+#kubectl annotate secret argocd-secret -n argocd meta.helm.sh/release-namespace=argocd --overwrite
 
 
 #kubectl edit application guestbook --namespace default

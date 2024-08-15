@@ -11,10 +11,10 @@
 #   }
 # }
 
-data "azurerm_kubernetes_cluster" "aks1" {
-  name                = var.cluster_name_aks1
-  resource_group_name = var.rg_name_aks1
-}
+# data "azurerm_kubernetes_cluster" "aks1" {
+#   name                = var.cluster_name_aks1
+#   resource_group_name = var.rg_name_aks1
+# }
 
 data "azurerm_kubernetes_cluster" "aks2" {
   name                = var.cluster_name_aks2
@@ -23,5 +23,5 @@ data "azurerm_kubernetes_cluster" "aks2" {
 
 # Output the Cluster details
 output "kubernetes_cluster_id" {
-  value = data.azurerm_kubernetes_cluster.aks1.id
+  value = data.azurerm_kubernetes_cluster.aks2.id
 }

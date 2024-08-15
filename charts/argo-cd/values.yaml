@@ -1,9 +1,9 @@
 argo-cd:
+  edis-ha:
+    enabled: false # required 3 nodes
   dex:
     enabled: false
   notifications:
-    enabled: false
-  applicationSet:
     enabled: false
   server:
     extraArgs:

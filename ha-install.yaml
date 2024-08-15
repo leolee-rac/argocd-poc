@@ -18,6 +18,7 @@ argo-cd:
       minReplicas: 2
 
   applicationSet:
+    enabled: false
     replicas: 2
 
   # Server Config

@@ -70,16 +70,6 @@ provider "azurerm" {
   subscription_id = var.azure_subscription_id
 }
 
-provider "argocd" {
-  #server_addr = replace(data.azurerm_kubernetes_cluster.aks2.kube_config.0.host, "https://", "") #data.azurerm_kubernetes_cluster.aks2.kube_config.0.host
-  # server_addr = "4.200.49.27"
-  # username  = "admin"
-  # password  = "TQdAxobc8OpfcHLR"
-
-  # insecure = true
-  use_local_config = true
-}
-
 # output "main_user" {
 #   value = data.azurerm_kubernetes_cluster.aks2.kube_config.0.username
 #   sensitive = true

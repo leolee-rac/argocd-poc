@@ -195,6 +195,10 @@ resource "kubectl_manifest" "guestbook" {
 #terraform state list
 #terraform state rm helm_release.applicationset
 
+#kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-name=argocd --overwrite
+#kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-namespace=argocd --overwrite
+
+
 #kubectl edit application guestbook --namespace default
 #kubectl apply -n argocd -f applicationset.yaml
 #kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml

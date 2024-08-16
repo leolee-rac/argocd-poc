@@ -130,6 +130,7 @@ resource "helm_release" "argocd-mamager" {
 
 #helm status argocd --namespace argocd
 #helm install argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
+#helm upgrade argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
 #helm uninstall argocd --namespace argocd
 #helm install -f values-dev.yaml root-app ./charts/root-app
 #helm list -n argocd

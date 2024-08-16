@@ -69,50 +69,6 @@ resource "helm_release" "argocd-mamager" {
 
 }
 
-# resource "helm_release" "argocd" {
-#   name       = "argocd"
-#   namespace  = "argocd"
-#   repository = "https://argoproj.github.io/argo-helm"
-#   chart      = "argo-cd"
-#   version    = "7.4.3"
-#   depends_on = [
-#     kubernetes_namespace.argocd
-#   ]
-#   values = [
-#     file("ha-install.yaml")
-#   ]
-#   set {
-#     name  = "server.service.type"
-#     value = "LoadBalancer"
-#   }
-# }
-
-# resource "helm_release" "root-app" {
-#   name       = "root-app"
-#   namespace  = "argocd"
-#   repository = "https://github.com/leolee-rac/argocd-poc.git"
-#   chart      = "charts/root-app"
-#   depends_on = [helm_release.argocd]
-
-# }
-
-
-# resource "null_resource" "applicationset" {
-#   provisioner "local-exec" {
-#     command = "kubectl apply -n argocd -f https://raw.githubusercontent.com/leolee-rac/argocd-poc/main/charts/guestbook/templates/applicationset.yaml?token=GHSAT0AAAAAACQQSSU6TZUY3IPT3P6HRPIWZV4YBMA"
-#   }
-# }
-# resource "helm_release" "applicationset" {
-#   name       = "applicationset"
-#   namespace  = "argocd"
-#   create_namespace = false
-#   repository = "https://github.com/leolee-rac/argocd-poc.git"
-#   chart      = "charts/guestbook"
-#   depends_on = [helm_release.argocd]
-# }
-
-
-
 
 # replace with code?
 # resource "argocd_cluster" "argocd_cluster_aks2" {
@@ -172,66 +128,6 @@ resource "helm_release" "argocd-mamager" {
 
 # }
 
-
-# resource "kubernetes_secret" "argocd_cluster_aks1" {
-#   depends_on = [helm_release.argocd]
-#   metadata {
-#     name      = data.azurerm_kubernetes_cluster.aks1.name
-#     namespace = "argocd"
-
-#     labels = {
-#       "argocd.argoproj.io/secret-type" = "cluster"
-#     }
-#   }
-
-#   data = {
-#     name            = base64encode(data.azurerm_kubernetes_cluster.aks2.name)
-#     server          = base64encode(data.azurerm_kubernetes_cluster.aks2.kube_config.0.host)
-#     clusterResources = true
-#     config          = base64encode(jsonencode({
-#       tlsClientConfig = {
-#         insecure = true
-#         #caData = data.azurerm_kubernetes_cluster.aks2.kube_config.0.cluster_ca_certificate
-#         cert_data = base64decode(data.azurerm_kubernetes_cluster.aks2.kube_config[0].client_certificate)
-#         key_data = base64decode(data.azurerm_kubernetes_cluster.aks2.kube_config[0].client_key)
-#       }
-#     }))
-#   }
-# }
-/*
-resource "kubectl_manifest" "guestbook" {
-  depends_on = [helm_release.argocd]
-
-  yaml_body = yamlencode({
-    apiVersion = "argoproj.io/v1alpha1"
-    kind       = "Application"
-
-    metadata = {
-      name      = "guestbook"
-      namespace = "argocd"
-    }
-
-    spec = {
-      project = "default"
-      source = {
-        repoURL = "https://github.com/argoproj/argocd-example-apps.git"
-        path = "guestbook"
-      }
-      destination = {
-        namespace = "default"
-        server = "https://kubernetes.default.svc"
-      }
-      syncPolicy = {
-        automated = {
-          prune = true
-          selfHeal = true
-        }
-      }
-    }
-  })
-
-}
-*/
 #helm status argocd --namespace argocd
 #helm install argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
 #helm uninstall argocd --namespace argocd
@@ -268,6 +164,7 @@ resource "kubectl_manifest" "guestbook" {
 # kubectl delete crd applicationSet.argoproj.io
 # kubectl delete crd AppProject.argoproj.io
 
+#kubectl -n argocd rollout restart deployment argocd-server
 
 
 #kubectl edit application guestbook --namespace default

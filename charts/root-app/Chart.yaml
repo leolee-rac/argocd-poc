@@ -1,3 +1,3 @@
 apiVersion: v2
-name: root-app
+name: argocd-manager
 version: 1.0.0

@@ -10,22 +10,22 @@ argo-cd:
       type: LoadBalancer
     autoscaling:
       enabled: true
-      minReplicas: 2
+      minReplicas: 1
 
   repoServer:
     autoscaling:
       enabled: true
-      minReplicas: 2
+      minReplicas: 1
 
   applicationSet:
     enabled: false
-    replicas: 2
+    replicas: 1
 
   # Server Config
   configs:
     params:
       application.namespaces: "*"
-      applicationsetcontroller.enable.progressive.syncs: true
+      #applicationsetcontroller.enable.progressive.syncs: true
       # applicationsetcontroller.policy: sync
       # controller.ignore.normalizer.jq.timeout: 1s
       # controller.operation.processors: 10

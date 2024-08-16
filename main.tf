@@ -46,10 +46,8 @@ resource "kubernetes_namespace" "uat" {
 
 resource "helm_release" "argocd" {
   name       = "argocd"
-  namespace  = "argocd"
-  repository = "https://argoproj.github.io/argo-helm"
-  chart      = "argo-cd"
-  version    = "7.4.3"
+  repository = "https://github.com/leolee-rac/argocd-poc.git"
+  chart      = "charts/argo-cd"
   depends_on = [
     kubernetes_namespace.argocd
   ]
@@ -62,14 +60,41 @@ resource "helm_release" "argocd" {
   }
 }
 
-resource "helm_release" "root-app" {
-  name       = "root-app"
-  namespace  = "argocd"
+resource "helm_release" "argocd-mamager" {
+  name       = "argocd-mamager"
+  namespace  = "default"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/root-app"
   depends_on = [helm_release.argocd]
 
 }
+
+# resource "helm_release" "argocd" {
+#   name       = "argocd"
+#   namespace  = "argocd"
+#   repository = "https://argoproj.github.io/argo-helm"
+#   chart      = "argo-cd"
+#   version    = "7.4.3"
+#   depends_on = [
+#     kubernetes_namespace.argocd
+#   ]
+#   values = [
+#     file("ha-install.yaml")
+#   ]
+#   set {
+#     name  = "server.service.type"
+#     value = "LoadBalancer"
+#   }
+# }
+
+# resource "helm_release" "root-app" {
+#   name       = "root-app"
+#   namespace  = "argocd"
+#   repository = "https://github.com/leolee-rac/argocd-poc.git"
+#   chart      = "charts/root-app"
+#   depends_on = [helm_release.argocd]
+
+# }
 
 
 # resource "null_resource" "applicationset" {
@@ -210,9 +235,15 @@ resource "kubectl_manifest" "guestbook" {
 #helm status argocd --namespace argocd
 #helm install argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
 #helm uninstall argocd --namespace argocd
-
+#helm install -f values-dev.yaml root-app ./charts/root-app
 #helm list -n argocd
+#helm list -A
 #helm uninstall applicationset -n argocd
+
+#helm repo remove argo
+#helm repo add argo https://argoproj.github.io/argo-helm
+#helm repo update
+#helm search repo argo/argo-cd --versions
 
 #kubectl delete clusterrole argocd-application-controller
 #kubectl delete clusterrole argocd-server
@@ -223,13 +254,20 @@ resource "kubectl_manifest" "guestbook" {
 #terraform state rm helm_release.applicationset
 
 #kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-name=argocd --overwrite
-#kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-namespace=argocd --overwrite
+#kubectl annotate serviceaccount argocd-application-controller -n argocd meta.helm.sh/release-namespace=default --overwrite
 
 #kubectl annotate serviceaccount argocd-server -n argocd meta.helm.sh/release-name=argocd --overwrite
 #kubectl annotate serviceaccount argocd-server -n argocd meta.helm.sh/release-namespace=argocd --overwrite
 
 #kubectl annotate secret argocd-secret -n argocd meta.helm.sh/release-name=argocd --overwrite
 #kubectl annotate secret argocd-secret -n argocd meta.helm.sh/release-namespace=argocd --overwrite
+
+#kubectl annotate crd applications.argoproj.io meta.helm.sh/release-namespace=default --overwrite
+# or
+# kubectl delete crd applications.argoproj.io
+# kubectl delete crd applicationSet.argoproj.io
+# kubectl delete crd AppProject.argoproj.io
+
 
 
 #kubectl edit application guestbook --namespace default

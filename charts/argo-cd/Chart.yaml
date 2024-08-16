@@ -1,7 +1,7 @@
 # https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml
 apiVersion: v2
 name: argo-cd
-version: 1.0.0
+version: 1.0.1
 dependencies:
   - name: argo-cd
     version: 6.11.1

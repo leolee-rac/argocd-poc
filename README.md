@@ -10,7 +10,7 @@ disconnect GP
 minikube start --vm-driver=hyperv --alsologtostderr -v=7
 minikube start --cpus 4 --memory 3072 --alsologtostderr -v=7
 
-argocd admin initial-password -n argocd
+argocd admin initial-password -n default
 
 minikube node add
 ## https://medium.com/cloudnloud/how-to-minikube-with-multi-node-setup-1159006fc80e
@@ -19,5 +19,5 @@ minikube start — nodes=2 -p dev
 minikube start — nodes=2 -p stg
 
 minikube start — nodes=2 -p prod
-oGDTsOKNCnCNmqIB
+
 kubectl port-forward svc/argocd-server -n default 8080:443

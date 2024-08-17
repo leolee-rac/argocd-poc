@@ -54,10 +54,10 @@ resource "helm_release" "argocd" {
   values = [
     file("ha-install.yaml")
   ]
-  set {
-    name  = "server.service.type"
-    value = "LoadBalancer"
-  }
+  # set {
+  #   name  = "server.service.type"
+  #   value = "LoadBalancer"
+  # }
 }
 
 resource "helm_release" "argocd-mamager" {
@@ -130,7 +130,8 @@ resource "helm_release" "argocd-mamager" {
 
 #helm status argocd --namespace argocd
 #helm install argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
-#helm upgrade argocd argo/argo-cd --namespace argocd --create-namespace -f ha-install.yaml
+#helm install  argocd charts/argo-cd/ -f ha-install.yaml --dry-run --debug -n default --version 7.0.0
+#helm upgrade argocd charts/argo-cd/ -f ha-install.yaml -n default --version 7.0.0 --force
 #helm uninstall argocd --namespace argocd
 #helm install -f values-dev.yaml root-app ./charts/root-app
 #helm list -n argocd
@@ -165,6 +166,7 @@ resource "helm_release" "argocd-mamager" {
 # kubectl delete crd applicationSet.argoproj.io
 # kubectl delete crd AppProject.argoproj.io
 
+#kubectl get namespaces
 #kubectl -n argocd rollout restart deployment argocd-server
 
 

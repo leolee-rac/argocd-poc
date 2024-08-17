@@ -6,8 +6,8 @@ argo-cd:
     replicas: 1
 
   server:
-    service:
-      type: LoadBalancer
+    #service:
+    #  type: LoadBalancer
     autoscaling:
       enabled: true
       minReplicas: 1
@@ -18,7 +18,7 @@ argo-cd:
       minReplicas: 1
 
   applicationSet:
-    enabled: false
+    enabled: true
     replicas: 1
 
   # Server Config
@@ -42,3 +42,11 @@ argo-cd:
       # server.rootpath: ""
       # server.staticassets: /shared/app
       # server.x.frame.options: sameorigin
+  ## Custom resource configuration
+crds:
+  # -- Install and upgrade CRDs
+  install: false
+  # -- Keep CRDs on chart uninstall
+  keep: true
+  # -- Annotations to be added to all CRDs
+  annotations: {}

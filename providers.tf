@@ -10,9 +10,9 @@ terraform {
       source = "hashicorp/azurerm"
       version = "~>3.0"
     }
-    argocd = {
-      source = "oboukili/argocd"
-    }
+    # argocd = {
+    #   source = "oboukili/argocd"
+    # }
   }
 }
 
@@ -38,12 +38,13 @@ terraform {
 
 provider "kubernetes" {
   alias = "aks1"
-  host                   = data.azurerm_kubernetes_cluster.aks1.kube_config.0.host
-  username               = data.azurerm_kubernetes_cluster.aks1.kube_config.0.username
-  password               = data.azurerm_kubernetes_cluster.aks1.kube_config.0.password
-  client_certificate     = base64decode(data.azurerm_kubernetes_cluster.aks1.kube_config.0.client_certificate)
-  client_key             = base64decode(data.azurerm_kubernetes_cluster.aks1.kube_config.0.client_key)
-  cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.aks1.kube_config.0.cluster_ca_certificate)
+  # host                   = data.azurerm_kubernetes_cluster.aks1.kube_config.0.host
+  # username               = data.azurerm_kubernetes_cluster.aks1.kube_config.0.username
+  # password               = data.azurerm_kubernetes_cluster.aks1.kube_config.0.password
+  # client_certificate     = base64decode(data.azurerm_kubernetes_cluster.aks1.kube_config.0.client_certificate)
+  # client_key             = base64decode(data.azurerm_kubernetes_cluster.aks1.kube_config.0.client_key)
+  # cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.aks1.kube_config.0.cluster_ca_certificate)
+  config_path = "~/.kube/config"
 }
 
 provider "kubernetes" {

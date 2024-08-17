@@ -46,6 +46,7 @@ resource "kubernetes_namespace" "uat" {
 
 resource "helm_release" "argocd" {
   name       = "argocd"
+  namespace  = "argocd"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/argo-cd"
   depends_on = [
@@ -60,9 +61,9 @@ resource "helm_release" "argocd" {
   # }
 }
 
-resource "helm_release" "argocd-mamager" {
-  name       = "argocd-mamager"
-  namespace  = "default"
+resource "helm_release" "argocd-app" {
+  name       = "argocd-app"
+  namespace  = "argocd"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/root-app"
   depends_on = [helm_release.argocd]
@@ -161,10 +162,13 @@ resource "helm_release" "argocd-mamager" {
 #kubectl annotate secret argocd-secret -n argocd meta.helm.sh/release-namespace=argocd --overwrite
 
 #kubectl annotate crd applications.argoproj.io meta.helm.sh/release-namespace=default --overwrite
+#kubectl annotate crd applicationsets.argoproj.io meta.helm.sh/release-namespace=argocd --overwrite
+#kubectl annotate crd appprojects.argoproj.io meta.helm.sh/release-namespace=argocd --overwrite
 # or
 # kubectl delete crd applications.argoproj.io
 # kubectl delete crd applicationSet.argoproj.io
 # kubectl delete crd AppProject.argoproj.io
+
 
 #kubectl get namespaces
 #kubectl -n argocd rollout restart deployment argocd-server

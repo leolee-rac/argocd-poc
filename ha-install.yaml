@@ -9,16 +9,16 @@ argo-cd:
     #service:
     #  type: LoadBalancer
     autoscaling:
-      enabled: true
-      minReplicas: 2
+      enabled: false
+      minReplicas: 1
 
   repoServer:
     autoscaling:
-      enabled: true
+      enabled: false
       minReplicas: 1
 
   applicationSet:
-    enabled: true
+    enabled: false
     replicas: 1
 
   # Server Config

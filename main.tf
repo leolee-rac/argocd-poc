@@ -44,9 +44,8 @@ resource "kubernetes_namespace" "uat" {
 
 # https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/README.md
 
-resource "helm_release" "argocd" {
-  name       = "argocd"
-  namespace  = "argocd"
+resource "helm_release" "argo-cd" {
+  name       = "argo-cd"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/argo-cd"
   depends_on = [
@@ -61,13 +60,11 @@ resource "helm_release" "argocd" {
   # }
 }
 
-resource "helm_release" "argocd-app" {
-  name       = "argocd-app"
-  namespace  = "argocd"
+resource "helm_release" "argocd-manager" {
+  name       = "argocd-manager"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/root-app"
-  depends_on = [helm_release.argocd]
-
+  depends_on = [helm_release.argo-cd]
 }
 
 
@@ -162,8 +159,13 @@ resource "helm_release" "argocd-app" {
 #kubectl annotate secret argocd-secret -n argocd meta.helm.sh/release-namespace=argocd --overwrite
 
 #kubectl annotate crd applications.argoproj.io meta.helm.sh/release-namespace=default --overwrite
-#kubectl annotate crd applicationsets.argoproj.io meta.helm.sh/release-namespace=argocd --overwrite
-#kubectl annotate crd appprojects.argoproj.io meta.helm.sh/release-namespace=argocd --overwrite
+#kubectl annotate crd applicationsets.argoproj.io meta.helm.sh/release-namespace=default --overwrite
+#kubectl annotate crd appprojects.argoproj.io meta.helm.sh/release-namespace=default --overwrite
+
+# kubectl annotate crd applications.argoproj.io meta.helm.sh/release-name=argo-cd --overwrite
+# kubectl annotate crd applicationsets.argoproj.io meta.helm.sh/release-name=argo-cd --overwrite
+# kubectl annotate crd appprojects.argoproj.io meta.helm.sh/release-name=argo-cd --overwrite
+
 # or
 # kubectl delete crd applications.argoproj.io
 # kubectl delete crd applicationSet.argoproj.io

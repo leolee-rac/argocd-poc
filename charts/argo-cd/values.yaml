@@ -1,5 +1,5 @@
 argo-cd:
-  edis-ha:
+  redis-ha:
     enabled: false # required 3 nodes
   dex:
     enabled: false

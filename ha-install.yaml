@@ -1,9 +1,13 @@
 argo-cd:
   redis-ha:
     enabled: false # required 3 nodes
+    nodeSelector:
+      some-node-label: infra
 
   controller:
     replicas: 1
+    nodeSelector:
+      some-node-label: infra
 
   server:
     #service:
@@ -11,16 +15,28 @@ argo-cd:
     autoscaling:
       enabled: false
       minReplicas: 1
+    nodeSelector:
+      some-node-label: infra
 
   repoServer:
     autoscaling:
       enabled: false
       minReplicas: 1
+    nodeSelector:
+      some-node-label: infra
 
   applicationSet:
     enabled: false
     replicas: 1
+    nodeSelector:
+      some-node-label: infra
 
+  notifications:
+    nodeSelector:
+      some-node-label: infra
+  dex:
+    nodeSelector:
+      some-node-label: infra
   # Server Config
   configs:
     params:

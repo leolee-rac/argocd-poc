@@ -6,6 +6,9 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+  nodePlacement:
+    nodeSelector:
+      name: infra
   source:
     repoURL: https://github.com/leolee-rac/argocd-poc.git
     path: charts/argo-cd

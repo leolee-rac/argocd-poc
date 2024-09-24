@@ -1,27 +1,20 @@
 resource "kubernetes_namespace" "argocd" {
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
-
   metadata {
     name = "argocd"
   }
 }
 
 resource "kubernetes_namespace" "dev" {
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
-
   metadata {
     name = "dev"
   }
 }
 
 resource "kubernetes_namespace" "uat" {
-  depends_on = [data.azurerm_kubernetes_cluster.aks2]
-
   metadata {
     name = "uat"
   }
 }
-
 
 # Auth to fetch git-ops code
 # resource "kubernetes_secret" "argocd_repo_credentials" {
@@ -38,19 +31,16 @@ resource "kubernetes_namespace" "uat" {
 
 # }
 
-
-
-
-
 # https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/README.md
 
-resource "helm_release" "argo-cd" {
-  name       = "argo-cd"
+resource "helm_release" "argocd" {
+  name       = "argocd"
+  namespace = "argocd"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/argo-cd"
-  depends_on = [
-    kubernetes_namespace.argocd
-  ]
+  # depends_on = [
+  #   kubernetes_namespace.argocd
+  # ]
   values = [
     file("ha-install.yaml")
   ]
@@ -62,9 +52,10 @@ resource "helm_release" "argo-cd" {
 
 resource "helm_release" "argocd-manager" {
   name       = "argocd-manager"
+  namespace = "argocd"
   repository = "https://github.com/leolee-rac/argocd-poc.git"
   chart      = "charts/root-app"
-  depends_on = [helm_release.argo-cd]
+  depends_on = [helm_release.argocd]
 }
 
 
@@ -168,8 +159,8 @@ resource "helm_release" "argocd-manager" {
 
 # or
 # kubectl delete crd applications.argoproj.io
-# kubectl delete crd applicationSet.argoproj.io
-# kubectl delete crd AppProject.argoproj.io
+# kubectl delete crd applicationsets.argoproj.io
+# kubectl delete crd appprojects.argoproj.io
 
 
 #kubectl get namespaces

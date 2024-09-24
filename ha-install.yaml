@@ -1,42 +1,25 @@
 argo-cd:
   redis-ha:
     enabled: false # required 3 nodes
-    nodeSelector:
-      some-node-label: infra
 
   controller:
     replicas: 1
-    nodeSelector:
-      some-node-label: infra
 
   server:
-    #service:
-    #  type: LoadBalancer
+    # service:
+    #   type: LoadBalancer
     autoscaling:
       enabled: false
       minReplicas: 1
-    nodeSelector:
-      some-node-label: infra
 
   repoServer:
     autoscaling:
       enabled: false
       minReplicas: 1
-    nodeSelector:
-      some-node-label: infra
 
   applicationSet:
     enabled: false
     replicas: 1
-    nodeSelector:
-      some-node-label: infra
-
-  notifications:
-    nodeSelector:
-      some-node-label: infra
-  dex:
-    nodeSelector:
-      some-node-label: infra
   # Server Config
   configs:
     params:
@@ -59,10 +42,10 @@ argo-cd:
       # server.staticassets: /shared/app
       # server.x.frame.options: sameorigin
   ## Custom resource configuration
-crds:
-  # -- Install and upgrade CRDs
-  install: false
-  # -- Keep CRDs on chart uninstall
-  keep: true
-  # -- Annotations to be added to all CRDs
-  annotations: {}
+# crds:
+#   # -- Install and upgrade CRDs
+#   install: false
+#   # -- Keep CRDs on chart uninstall
+#   keep: true
+#   # -- Annotations to be added to all CRDs
+#   annotations: {}
